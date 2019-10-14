@@ -21,23 +21,37 @@
     "ssh_username": "ubuntu",
     "ami_name": "testground-base {{timestamp}}"
   }],
-  "provisioners": [{
-    "type": "shell",
-    "inline": [
-      "sleep 30",
-      "sudo apt-get update",
-      "sudo apt-get install -y redis-server",
-      "sudo systemctl disable redis-server",
-      "sudo apt-get install -y build-essential",
-      "wget https://dl.google.com/go/go1.13.1.linux-amd64.tar.gz",
-      "sudo tar -C /usr/local -xzf go1.13.1.linux-amd64.tar.gz",
-      "sudo bash -c 'echo \"export PATH=\\$PATH:/usr/local/go/bin\" >> /etc/profile'",
-      "sudo apt-get install -y apt-transport-https gnupg-agent",
-      "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -",
-      "sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\"",
-      "sudo apt-get update",
-      "sudo apt-get install -y docker-ce docker-ce-cli containerd.io",
-      "sudo usermod -aG docker ubuntu"
-    ]
-  }]
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "filebeat.yml",
+      "destination": "/tmp/filebeat.yml"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "sleep 30",
+        "sudo apt-get update",
+        "sudo apt-get install -y redis-server",
+        "sudo systemctl disable redis-server",
+        "sudo apt-get install -y build-essential",
+        "wget https://dl.google.com/go/go1.13.1.linux-amd64.tar.gz",
+        "sudo tar -C /usr/local -xzf go1.13.1.linux-amd64.tar.gz",
+        "echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee -a /etc/profile",
+        "sudo apt-get install -y apt-transport-https gnupg-agent",
+        "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -",
+        "sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\"",
+        "sudo apt-get update",
+        "sudo apt-get install -y docker-ce docker-ce-cli containerd.io",
+        "sudo usermod -aG docker ubuntu",
+        "wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -",
+        "echo 'deb https://artifacts.elastic.co/packages/7.x/apt stable main' | sudo tee -a /etc/apt/sources.list.d/elastic-7.x.list",
+        "sudo apt-get update",
+        "sudo apt-get install -y filebeat",
+        "sudo mv /tmp/filebeat.yml /etc/filebeat/filebeat.yml",
+        "sudo chown root. /etc/filebeat/filebeat.yml",
+        "sudo update-rc.d filebeat defaults 95 10"
+      ]
+    }
+  ]
 }
