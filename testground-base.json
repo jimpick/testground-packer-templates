@@ -1,0 +1,43 @@
+{
+  "variables": {
+    "aws_access_key": "",
+    "aws_secret_key": ""
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "us-west-2",
+    "source_ami_filter": {
+      "filters": {
+        "virtualization-type": "hvm",
+        "name": "ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-20191002",
+        "root-device-type": "ebs"
+      },
+      "owners": ["099720109477"],
+      "most_recent": true
+    },
+    "instance_type": "t2.micro",
+    "ssh_username": "ubuntu",
+    "ami_name": "testground-base {{timestamp}}"
+  }],
+  "provisioners": [{
+    "type": "shell",
+    "inline": [
+      "sleep 30",
+      "sudo apt-get update",
+      "sudo apt-get install -y redis-server",
+      "sudo systemctl disable redis-server",
+      "sudo apt-get install -y build-essential",
+      "wget https://dl.google.com/go/go1.13.1.linux-amd64.tar.gz",
+      "sudo tar -C /usr/local -xzf go1.13.1.linux-amd64.tar.gz",
+      "sudo bash -c 'echo \"export PATH=\\$PATH:/usr/local/go/bin\" >> /etc/profile'",
+      "sudo apt-get install -y apt-transport-https gnupg-agent",
+      "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -",
+      "sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\"",
+      "sudo apt-get update",
+      "sudo apt-get install -y docker-ce docker-ce-cli containerd.io",
+      "sudo usermod -aG docker ubuntu"
+    ]
+  }]
+}
