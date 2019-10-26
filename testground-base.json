@@ -50,7 +50,14 @@
         "sudo apt-get install -y filebeat",
         "sudo mv /tmp/filebeat.yml /etc/filebeat/filebeat.yml",
         "sudo chown root. /etc/filebeat/filebeat.yml",
-        "sudo update-rc.d filebeat defaults 95 10"
+        "sudo update-rc.d filebeat defaults 95 10",
+        "sudo apt-add-repository --yes --update ppa:ansible/ansible",
+        "sudo apt-get install -y ansible python-pip",
+        "sudo pip install boto boto3 botocore",
+        "sudo pip install awscli",
+        "sudo snap install ripgrep --classic",
+        "sudo apt-get install -y jq",
+        "git clone https://github.com/ipfs/testground.git"
       ]
     }
   ]
