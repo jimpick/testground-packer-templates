@@ -28,6 +28,11 @@
       "destination": "/tmp/filebeat.yml"
     },
     {
+      "type": "file",
+      "source": "tweak-ansible.sh",
+      "destination": "/tmp/tweak-ansible.sh"
+    },
+    {
       "type": "shell",
       "inline": [
         "sleep 30",
@@ -53,6 +58,7 @@
         "sudo update-rc.d filebeat defaults 95 10",
         "sudo apt-add-repository --yes --update ppa:ansible/ansible",
         "sudo apt-get install -y ansible python-pip",
+        "sudo bash /tmp/tweak-ansible.sh",
         "sudo pip install boto boto3 botocore",
         "sudo pip install awscli",
         "sudo snap install ripgrep --classic",
