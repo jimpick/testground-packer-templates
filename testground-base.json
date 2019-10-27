@@ -63,7 +63,15 @@
         "sudo pip install awscli",
         "sudo snap install ripgrep --classic",
         "sudo apt-get install -y jq",
-        "git clone https://github.com/ipfs/testground.git"
+        "git clone https://github.com/ipfs/testground.git",
+        "git clone https://github.com/jimpick/testground-misc-scripts.git",
+        "sudo systemctl start docker",
+        "sudo docker pull redis",
+        "sudo docker pull golang:1.13-buster",
+        "sudo docker pull busybox:1.31.0-glibc",
+        "sudo docker pull debian",
+        "sudo chown -R ubuntu. .",
+        "bash -l -c 'cd testground && go build'"
       ]
     }
   ]
