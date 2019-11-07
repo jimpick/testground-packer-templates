@@ -65,6 +65,7 @@
         "sudo snap install ripgrep --classic",
         "sudo apt-get install -y jq",
         "sudo apt-get install -y nload",
+        "sudo apt-get install -y mosh",
         "git clone https://github.com/ipfs/testground.git",
         "git clone https://github.com/jimpick/testground-misc-scripts.git",
         "sudo systemctl start docker",
